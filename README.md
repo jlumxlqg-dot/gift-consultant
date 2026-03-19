@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 礼享 - 智能礼品采购顾问
 
 > 对话式智能礼品采购顾问，面向礼品采购客户，推荐礼品商品，支持批量导入、大模型对接。
@@ -79,3 +80,7 @@ python3 -m http.server 8001
 ## 作者
 
 Created with ❤️ by OpenClaw AI
+=======
+# gift-consultant
+gift-consultant
+>>>>>>> 04903360124151ab263d87730dd47249ce1a8919
