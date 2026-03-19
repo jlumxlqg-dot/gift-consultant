@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>礼享 - 智能礼品采购顾问</title>
+    <meta name="description" content="智能礼品采购顾问，帮你快速找到最合适的礼品">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 侧边栏 - 商品推荐 -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h3>推荐商品</h3>
+            <button class="refresh-btn" id="refreshRecommend" title="换一批推荐">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 9V3L9 9L3 15V9Z" fill="currentColor"/>
+                    <path d="M15 3V15H9L15 9V3Z" fill="currentColor" opacity="0.5"/>
+                </svg>
+            </button>
+        </div>
+        <div class="recommendations" id="recommendations">
+            <!-- 商品推荐卡片 动态生成 -->
+        </div>
+    </aside>
+
+    <!-- 主内容区 - 对话 -->
+    <main class="main-content">
+        <!-- 头部 -->
+        <header class="chat-header">
+            <div class="chat-header-info">
+                <div class="logo">
+                    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="36" height="36" rx="10" fill="#8B5CF6"/>
+                        <path d="M12 18L17 23L24 13" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div>
+                        <h1>礼享</h1>
+                        <p>智能礼品采购顾问</p>
+                    </div>
+                </div>
+                <div class="status">
+                    <span class="status-dot online"></span>
+                    <span>在线</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 对话容器 -->
+        <div class="chat-container" id="chatContainer">
+            <!-- 欢迎消息 -->
+            <div class="message bot-message">
+                <div class="message-avatar">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="32" height="32" rx="8" fill="#8B5CF6"/>
+                        <text x="16" y="20" text-anchor="middle" fill="white" font-size="14" font-weight="600">礼</text>
+                    </svg>
+                </div>
+                <div class="message-content">
+                    <div class="message-text">
+                        👋 您好！我是您的智能礼品采购顾问。
+                        <br><br>
+                        我可以帮您：
+                        <ul>
+                            <li>🎁 根据预算和场景推荐礼品</li>
+                            <li>🏢 企业团购批量采购</li>
+                            <li>✨ 高端礼品定制推荐</li>
+                            <li>📦 一键获取报价和采购方案</li>
+                        </ul>
+                        请问您需要采购哪类礼品？我来帮您推荐最合适的选择！
+                    </div>
+                    <div class="quick-replies">
+                        <button class="quick-reply" data-text="🎁 我需要给客户采购商务礼品">给客户采购商务礼品</button>
+                        <button class="quick-reply" data-text="🏢 公司年会员工福利礼品">公司年会员工福利</button>
+                        <button class="quick-reply" data-text="✨ 高端礼品定制送给领导">高端礼品定制送领导</button>
+                        <button class="quick-reply" data-text="🎯 500元左右性价比礼品推荐">500元左右推荐</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 对话内容动态添加 -->
+        </div>
+
+        <!-- 输入框 -->
+        <footer class="chat-input-footer">
+            <div class="input-wrapper">
+                <textarea 
+                    id="userInput" 
+                    placeholder="说说您的礼品需求..."
+                    rows="1"></textarea>
+                <button class="send-btn" id="sendBtn" disabled>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 10L17 3L14 10L17 17L3 10Z" fill="white" stroke="white" stroke-width="1" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="input-hints">
+                <span>支持：商务礼品 / 员工福利 / 客户馈赠 / 活动定制</span>
+            </div>
+        </footer>
+    </main>
+
+    <!-- 商品详情弹窗 -->
+    <div class="modal" id="productModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content modal-product">
+            <div class="modal-header">
+                <h2>商品详情</h2>
+                <button class="modal-close" id="closeProductModal">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="product-detail-content" id="productDetailContent">
+                <!-- 动态填充 -->
+            </div>
+            <div class="product-detail-actions">
+                <button class="btn-secondary" id="closeDetailBtn">关闭</button>
+                <button class="btn-primary" id="contactBtn">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 6L9 10L15 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <rect x="1" y="3" width="16" height="12" rx="2" stroke="white" stroke-width="2"/>
+                    </svg>
+                    咨询采购
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
